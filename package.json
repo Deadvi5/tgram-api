@@ -1,0 +1,22 @@
+{
+  "name": "tgram-api",
+  "version": "1.0.0",
+  "description": "tgram api test",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Deadvi5/tgram-api.git"
+  },
+  "keywords": [
+    "test"
+  ],
+  "author": "lorenzo villa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Deadvi5/tgram-api/issues"
+  },
+  "homepage": "https://github.com/Deadvi5/tgram-api#readme"
+}
