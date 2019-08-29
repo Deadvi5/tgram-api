@@ -19,41 +19,42 @@ namespace core.Controllers
             movies = task.GetAwaiter().GetResult();
         }
 
-        // GET api/values
         [HttpGet]
         public ActionResult<Movie[]> Get()
         {
             return movies;
         }
 
-        private Task<Movie[]> getInfo()
-        {
-            using (WebClient wc = new WebClient())
-            {
-                var json = new WebClient().DownloadString(new Uri("https://raw.githubusercontent.com/prust/wikipedia-movie-data/master/movies.json")); 
-                return Task.FromResult(JsonConvert.DeserializeObject<Movie[]>(json));
-            }      
-        }
-
-        // GET api/values/5
         [HttpGet("{year}")]
         public ActionResult<Movie> Get(int year)
         {
             return movies.FirstOrDefault(x=>x.year==year);
         }
 
-        // GET api/values/5
         [HttpGet("title/{title}")]
         public ActionResult<Movie[]> Title(string title)
         {
-            return movies.Where(x=>x.title.Contains(title)).ToArray();
+            return movies.Where(x=>x.title.ToLower().Contains(title.ToLower())).ToArray();
         }
-
-        // GET api/values/5
+        
+        //api/Messages/actor/
         [HttpGet("actor/{actor}")]
         public ActionResult<Movie[]> Actor(string actor)
         {
-            return movies.Where(x=>x.cast.Any(z=>z.Contains(actor))).ToArray();
+            return movies.Where(x=>x.cast.Any(z=>z.ToLower().Contains(actor.ToLower()))).ToArray();
+        }
+
+        [HttpGet("genre/{genre}")]
+        public ActionResult<Movie[]> Genre(string genre)
+        {
+            return movies.Where(x=>x.genres.Any(z=>z.ToLower().Contains(genre.ToLower()))).ToArray();
+        }
+
+        // GET api/values/5
+        [HttpGet("count")]
+        public ActionResult<int> Count()
+        {
+            return movies.Length;
         }
 
         // POST api/values
@@ -73,5 +74,16 @@ namespace core.Controllers
         public void Delete(int id)
         {
         }
+
+        #region Private Members
+        private Task<Movie[]> getInfo()
+        {
+            using (WebClient wc = new WebClient())
+            {
+                var json = new WebClient().DownloadString(new Uri("https://raw.githubusercontent.com/prust/wikipedia-movie-data/master/movies.json")); 
+                return Task.FromResult(JsonConvert.DeserializeObject<Movie[]>(json));
+            }      
+        }
+        #endregion
     }
 }
