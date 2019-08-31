@@ -26,9 +26,9 @@ namespace core.Controllers
         }
 
         [HttpGet("{year}")]
-        public ActionResult<Movie> Get(int year)
+        public ActionResult<Movie[]> Get(int year)
         {
-            return movies.FirstOrDefault(x=>x.year==year);
+            return movies.Where(x=>x.year==year).ToArray();
         }
 
         [HttpGet("title/{title}")]
@@ -42,6 +42,13 @@ namespace core.Controllers
         public ActionResult<Movie[]> Actor(string actor)
         {
             return movies.Where(x=>x.cast.Any(z=>z.ToLower().Contains(actor.ToLower()))).ToArray();
+        }
+
+        //api/Messages/actor/
+        [HttpGet("appears/{actor}")]
+        public ActionResult<string[]> Appears(string actor)
+        {
+            return movies.Where(x=>x.cast.Any(z=>z.ToLower().Contains(actor.ToLower()))).Select(m=>m.title).ToArray();
         }
 
         [HttpGet("genre/{genre}")]
